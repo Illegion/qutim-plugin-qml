@@ -1,8 +1,7 @@
 #include "popupwidget.h"
-#include <QtDeclarative/qmlview.h>
 #include <QGridLayout>
 #include <QUrl>
-#include <QtDeclarative/qmlcontext.h>
+#include <QtDeclarative/qdeclarativecontext.h>
 #include <QVariant>
 #include <QLatin1Literal>
 #include <qutim/layerscity.h>
@@ -60,9 +59,9 @@ namespace QmlPopups {
 		}
 
 		QString filename =themePath % QLatin1Literal("/main.qml");//м.б. QDir::separator?
-		setUrl(QUrl::fromLocalFile(filename));//url - main.qml
+		setSource(QUrl::fromLocalFile(filename));//url - main.qml
 
-		execute();
+		show();
 		rootContext()->setContextProperty("popupWidget",this);
 
 	}
@@ -83,7 +82,7 @@ namespace QmlPopups {
 	void PopupWidget::setData ( const QString& title, const QString& body, qutim_sdk_0_2::TreeModelItem item )
 	{
 		m_item = item;
-		QmlContext *context = rootContext();
+		QDeclarativeContext *context = rootContext();
 		context->setContextProperty("popupTitle",title);
 		context->setContextProperty("popupBody",body);
                 

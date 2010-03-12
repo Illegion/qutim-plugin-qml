@@ -8,7 +8,7 @@ using namespace qutim_sdk_0_2;
 #include <QWidget>
 #include <QDir>
 #include "backend.h"
-#include <QtDeclarative/QmlView>
+#include <QtDeclarative/QDeclarativeView>
 namespace QmlPopups
 {
 	enum PopupWidgetFlag
@@ -21,7 +21,7 @@ namespace QmlPopups
 	};
 	Q_DECLARE_FLAGS(PopupWidgetFlags,PopupWidgetFlag)
 
-	class PopupWidget : public QmlView
+	class PopupWidget : public QDeclarativeView
 	{
 		Q_OBJECT
 	public:
