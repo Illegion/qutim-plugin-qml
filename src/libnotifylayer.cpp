@@ -14,9 +14,7 @@ the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 Boston, MA 02110-1301, USA.
 */
 #include "libnotifylayer.h"
-#include <QDebug>
 #include <QSettings>
-//#include "notifyhelper.h"
 #include "notificationcore.h"
 
 LibnotifyLayer::LibnotifyLayer()
@@ -36,7 +34,8 @@ QList<SettingsStructure> LibnotifyLayer::getLayerSettingsList()
     settings.settings_item = new QTreeWidgetItem();
     settings.settings_item->setText(0, QObject::tr("Notifications"));
     //settings.settings_item->setIcon(0, Icon("events"));
-    settings.settings_widget = new QWidget();//settings_widget;
+    settings_widget = new QMLSettingsWidget();
+    settings.settings_widget = settings_widget;
     m_settings.append(settings);
     return m_settings;
 }
@@ -48,8 +47,6 @@ bool LibnotifyLayer::init(PluginSystemInterface*)
 }
 
 void LibnotifyLayer::setProfileName(const QString& profile_name) {
-    if(!settings_widget)
-        settings_widget = new QMLSettingsWidget();
     QmlPopups::Manager::self()->loadSettings();
     QSettings settings(QSettings::defaultFormat(), QSettings::UserScope, "qutim/qutim."+profile_name, "profilesettings");
     settings.beginGroup("sounds");

@@ -20,13 +20,13 @@
 #include "manager.h"
 #include <qutim/settings.h>
 #include <QDir>
+#include <QDebug>
 using namespace qutim_sdk_0_2;
 
 class QMLSettingsWidget : public QWidget, private Ui::QMLSettingsWidget {
     Q_OBJECT
 public:
     QMLSettingsWidget(QWidget *parent = 0);
-    ~QMLSettingsWidget();
 
 protected:
     void changeEvent(QEvent *e);

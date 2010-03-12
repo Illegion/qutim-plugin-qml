@@ -14,10 +14,9 @@
 
 #include "qmlsettingswidget.h"
 
-#include <QDebug>
-
 QMLSettingsWidget::QMLSettingsWidget(QWidget *parent) :
     QWidget(parent){
+    this->blockSignals(true);
     counter = 666;
     emit setCurveTypes();
     settings_static = new QSettings(QSettings::defaultFormat(),
@@ -28,8 +27,6 @@ QMLSettingsWidget::QMLSettingsWidget(QWidget *parent) :
     setupUi(this);    
     QString nameFilter("main.qml");
     QStringList pathlist = SystemsCity::PluginSystem()->getSharePaths();
-    qDebug() << pathlist;
-//    pathlist << "/home/prodoomman/";//TODO: потом не забыть убрать!
     foreach(QString dir_name, pathlist)
         foreach(QString name, QDir(dir_name+QDir::separator()+"qmlpopups").entryList(QDir::Dirs))
     {
@@ -59,6 +56,7 @@ QMLSettingsWidget::QMLSettingsWidget(QWidget *parent) :
     connect(contactOfflineCheckBox,SIGNAL(stateChanged(int)),this,SLOT(widgetStateChanged()));
     connect(contactOnlineCheckBox,SIGNAL(stateChanged(int)),this,SLOT(widgetStateChanged()));
     connect(messageRecivedCheckBox,SIGNAL(stateChanged(int)),this,SLOT(widgetStateChanged()));
+    this->blockSignals(false);
 }
 
 void QMLSettingsWidget::setCurveTypes()
@@ -129,7 +127,6 @@ void QMLSettingsWidget::loadSettings()
     messageRecivedCheckBox->setChecked(settings_static->value("messageRecived",true).toBool());
     marginSpinBox->setValue(settings_static->value("margin",20).toInt());
     themesList->setCurrentIndex(themesList->findText(settings_static->value("themeName","default").toString()));
-    qDebug() << "\n\n\n" << settings_static->value("themePath","default").toString() << "\n\n\n";
 }
 
 void QMLSettingsWidget::saveSettings()
@@ -168,7 +165,8 @@ void QMLSettingsWidget::changeEvent(QEvent *e)
 void QMLSettingsWidget::on_themesList_currentIndexChanged(int index)
 {
     Q_UNUSED(index);
-    preview();
+    if(QDir(themesList->itemData(themesList->currentIndex()).toString()).exists("main.qml"))
+        preview();
 }
 
 void QMLSettingsWidget::preview()
@@ -179,14 +177,13 @@ void QMLSettingsWidget::preview()
     saveSettings();
     qutim_sdk_0_2::TreeModelItem item;
     item.m_account_name = tr("Test");
-    item.m_item_name = tr("Test");
-    QmlPopups::Popup *popup;
     for(int i = 0; i<4; i++)
     {
-        popup = new QmlPopups::Popup(QString::number(counter++));
+        QmlPopups::Popup *popup = new QmlPopups::Popup(QString::number(counter++));
         popup->setMessage(tr("Preview"),tr("This is a simple popup ")+QString::number(i));
         popup->send();
     }
     settings_static->setValue("use_temp",false);
     settings_static->sync();
+    settings = settings_static;
 }

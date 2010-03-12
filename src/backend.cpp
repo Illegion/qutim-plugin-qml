@@ -18,7 +18,6 @@
 #include "manager.h"
 #include <QVariant>
 #include <QTime>
-#include <QDebug>
 
 namespace QmlPopups
 {

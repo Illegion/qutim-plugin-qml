@@ -15,7 +15,6 @@
 
 #include "manager.h"
 #include "popup.h"
-#include <QDebug>
 #include <QFile>
 #include <QTextDocument>
 #include <QApplication>

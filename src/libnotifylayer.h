@@ -23,7 +23,6 @@
 #include "backend.h"
 #include "manager.h"
 #include "qmlsettingswidget.h"
-#include <QDebug>
 
 using namespace qutim_sdk_0_2;
 
@@ -36,7 +35,7 @@ public:
 	virtual bool init(PluginSystemInterface *plugin_system);	
 	virtual void release() {}
 	virtual void removeGuiLayerSettings() {}
-	virtual void removeLayerSettings() {}
+	virtual void removeLayerSettings() {delete settings_widget;}
         QList<SettingsStructure> getLayerSettingsList();
 	virtual void saveGuiSettingsPressed() {}
 	virtual void saveLayerSettings();

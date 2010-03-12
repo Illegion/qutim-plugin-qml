@@ -59,7 +59,7 @@ namespace QmlPopups {
                     QtDWM::enableBlurBehindWindow(this,true);
 		}
 
-		QString filename =themePath % QLatin1Literal("/main.qml");
+		QString filename =themePath % QLatin1Literal("/main.qml");//м.б. QDir::separator?
 		setUrl(QUrl::fromLocalFile(filename));//url - main.qml
 
 		execute();
@@ -120,7 +120,7 @@ namespace QmlPopups {
 
 	void PopupWidget::activate()
 	{
-            if(!m_item.m_protocol_name.isEmpty())
+            if(!m_item.m_item_name.isEmpty())
                 SystemsCity::PluginSystem()->createChat(m_item);
             emit activated();
 	}

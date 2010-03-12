@@ -21,14 +21,13 @@
 #include <QTimer>
 #include <QFinalState>
 #include <QState>
-#include <QDebug>
 #include <QStateMachine>
 
 namespace QmlPopups
 {
 
 	Popup::Popup ( const QString& id)
-			:	m_id ( id ), m_machine(0), m_notification_widget(0)
+			:	m_notification_widget(0), m_id ( id ), m_machine(0)
 	{
 
 	}

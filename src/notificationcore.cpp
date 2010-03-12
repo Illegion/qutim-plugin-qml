@@ -15,7 +15,6 @@
 */
 
 #include "notificationcore.h"
-#include <QDebug>
 #include <QApplication>
 
 bool NotificationCore::init(PluginSystemInterface *plugin_system)

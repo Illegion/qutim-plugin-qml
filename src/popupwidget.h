@@ -6,6 +6,7 @@
 #include <qutim/plugininterface.h>
 using namespace qutim_sdk_0_2;
 #include <QWidget>
+#include <QDir>
 #include "backend.h"
 #include <QtDeclarative/QmlView>
 namespace QmlPopups
