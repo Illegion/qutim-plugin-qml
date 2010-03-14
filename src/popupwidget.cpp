@@ -90,8 +90,8 @@ namespace QmlPopups {
 	    K8JSON::parseValue(variant, s, &len);
 	    if(variant.toMap().keys().contains("appearance"))
 	    {
-		pf = static_cast<Qt::WindowFlags>(variant.toMap().value("appearance").toMap().value("popupFlags",Qt::ToolTip).toInt());
-		wf = static_cast<PopupWidgetFlags>(variant.toMap().value("appearance").toMap().value("widgetFlags",Transparent).toInt());
+		pf = static_cast<PopupWidgetFlags>(variant.toMap().value("appearance").toMap().value("popupFlags",Transparent).toInt());
+		wf = static_cast<Qt::WindowFlags>(variant.toMap().value("appearance").toMap().value("widgetFlags",Qt::ToolTip).toInt());
 	    }
 	    f.close();
 	}
