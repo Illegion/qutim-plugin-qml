@@ -5,7 +5,8 @@ HEADERS += src/libnotifylayer.h \
     src/manager.h \
     src/backend.h \
     src/qtdwm/qtdwm.h \
-    src/qmlsettingswidget.h
+    src/qmlsettingswidget.h \
+    k8json/k8json.h
 SOURCES += src/libnotifylayer.cpp \
     src/notificationcore.cpp \
     src/popupwidget.cpp \
@@ -13,7 +14,8 @@ SOURCES += src/libnotifylayer.cpp \
     src/manager.cpp \
     src/backend.cpp \
     src/qtdwm/qtdwm.cpp \
-    src/qmlsettingswidget.cpp
+    src/qmlsettingswidget.cpp \
+    k8json/k8json.cpp
 CONFIG += qt \
     plugin
 INCLUDEPATH += /usr/include

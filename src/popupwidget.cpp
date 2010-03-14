@@ -32,9 +32,12 @@ namespace QmlPopups {
                                      QSettings::UserScope, "qutim/"+SystemsCity::PluginSystem()->getProfileDir().dirName(), "qml_popups_temp");
                 themePath = settings.value("theme_path","/usr/share/qutim/qmlpopups/default").toString();
             }
-            //ConfigGroup appearance = Config(themePath + "/settings.json").group("appearance");//хз вообще зачем это...
-            setWindowFlags(static_cast<Qt::WindowFlags>(Qt::ToolTip));
-            PopupWidgetFlags popupFlags = static_cast<PopupWidgetFlags>(Transparent);
+
+            Qt::WindowFlags widgetFlags = Qt::ToolTip;
+            PopupWidgetFlags popupFlags = Transparent;
+            loadJsonSettings(themePath + "/settings.json",widgetFlags,popupFlags);
+            qDebug() << widgetFlags << " : " << popupFlags;
+            setWindowFlags(widgetFlags);
 
 		connect(this,SIGNAL(sceneResized(QSize)),this,SLOT(onSceneResized(QSize)));
 		//view->setContentResizable(true);
@@ -64,6 +67,33 @@ namespace QmlPopups {
 		show();
 		rootContext()->setContextProperty("popupWidget",this);
 
+	}
+	
+	void PopupWidget::loadJsonSettings(QString filename, Qt::WindowFlags &wf, PopupWidgetFlags &pf)
+	{
+	    wf = Qt::ToolTip;
+	    pf = Transparent;
+	    QFile f;
+	    f.setFileName(filename);
+	    if(!f.open(QIODevice::ReadOnly | QIODevice::Text))
+		return;
+	    int len = f.size();
+	    QByteArray array;
+	    const uchar *fmap = f.map(0, f.size());
+	    if(!fmap)
+	    {
+		array = f.readAll();
+		fmap = (uchar *)array.constData();
+	    }
+	    const uchar *s = K8JSON::skipBlanks(fmap, &len);
+	    QVariant variant;
+	    K8JSON::parseValue(variant, s, &len);
+	    if(variant.toMap().keys().contains("appearance"))
+	    {
+		pf = static_cast<Qt::WindowFlags>(variant.toMap().value("appearance").toMap().value("popupFlags",Qt::ToolTip).toInt());
+		wf = static_cast<PopupWidgetFlags>(variant.toMap().value("appearance").toMap().value("widgetFlags",Transparent).toInt());
+	    }
+	    f.close();
 	}
 
 	void PopupWidget::onSceneResized(QSize size)

@@ -9,6 +9,7 @@ using namespace qutim_sdk_0_2;
 #include <QDir>
 #include "backend.h"
 #include <QtDeclarative/QDeclarativeView>
+#include "k8json/k8json.h"
 namespace QmlPopups
 {
 	enum PopupWidgetFlag
@@ -40,6 +41,7 @@ namespace QmlPopups
 	private:
 		QSize m_size_hint;
                 qutim_sdk_0_2::TreeModelItem m_item;
+                void loadJsonSettings(QString filename, Qt::WindowFlags &wf, PopupWidgetFlags &pf);
 	};
 }
 
