@@ -45,9 +45,12 @@ QMLSettingsWidget::QMLSettingsWidget(QWidget *parent) :
     loadSettings();
     connect(previewButton,SIGNAL(released()),this,SLOT(preview()));
     connect(themesList,SIGNAL(currentIndexChanged(int)),this,SLOT(widgetStateChanged()));
-    connect(updatePositionBox,SIGNAL(stateChanged(int)),this,SLOT(widgetStateChanged()));
+    connect(themesList,SIGNAL(currentIndexChanged(int)),this,SLOT(preview()));
+    connect(updatePositionBox,SIGNAL(toggled(bool)),this,SLOT(widgetStateChanged()));
+    connect(appendModeCheckBox,SIGNAL(toggled(bool)),this,SLOT(widgetStateChanged()));
     connect(easingCurveComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(widgetStateChanged()));
     connect(animationCheckBox,SIGNAL(currentIndexChanged(int)),this,SLOT(widgetStateChanged()));
+    connect(animationDurationSpinBox,SIGNAL(valueChanged(int)),this,SLOT(widgetStateChanged()));
     connect(timeoutSpinBox,SIGNAL(valueChanged(int)),this,SLOT(widgetStateChanged()));
     connect(maxCountSpinBox,SIGNAL(valueChanged(int)),this,SLOT(widgetStateChanged()));
     connect(maxTextLengthSpinBox,SIGNAL(valueChanged(int)),this,SLOT(widgetStateChanged()));

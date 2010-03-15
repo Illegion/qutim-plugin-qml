@@ -43,7 +43,6 @@ public slots:
     void widgetStateChanged() { emit settingsChanged(); }
 
 private slots:
-    void on_themesList_currentIndexChanged(int index);
     void setCurveTypes();
 signals:
     void settingsChanged();
