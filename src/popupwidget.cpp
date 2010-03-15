@@ -14,22 +14,21 @@
 
 using namespace qutim_sdk_0_2;
 
-#ifdef Q_WS_WIN
-#define DEFAULT PATH "%APPDATA%\\qutim\\qmlpopups\\default\\"
-#else
-#define DEFAULT_PATH "~/.config/qutim/qmlpopups/default/"
-#endif
-
 namespace QmlPopups {
 
 	PopupWidget::PopupWidget()
 	{
-	    qDebug() << QDir(DEFAULT_PATH).absolutePath();//убрать после проверки под оффтопиком!!!
-            QString themePath = QmlPopups::Manager::getSettingsPtr()->value("theme_path",DEFAULT_PATH).toString();
-
+	    QSettings *settings = QmlPopups::Manager::getSettingsPtr();
             Qt::WindowFlags widgetFlags = Qt::ToolTip;
             PopupWidgetFlags popupFlags = Transparent;
-            loadJsonSettings(themePath + "/settings.json",widgetFlags,popupFlags);
+#ifdef Q_WS_WIN
+	    QString themePath = settings->value("theme_path","%APPDATA%\\qutim\\qmlpopups\\default\\").toString();
+            if(!settings->value("ignore_settings_json",false).toBool())
+#else
+	    QString themePath = settings->value("theme_path","~/.config/qutim/qmlpopups/default/").toString();
+	    if(!settings->value("ignore_settings_json",true).toBool())
+#endif
+                    loadJsonSettings(themePath + "/settings.json",widgetFlags,popupFlags);
             setWindowFlags(widgetFlags);
 
 	    connect(this,SIGNAL(sceneResized(QSize)),this,SLOT(onSceneResized(QSize)));

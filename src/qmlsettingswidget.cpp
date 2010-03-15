@@ -46,6 +46,7 @@ QMLSettingsWidget::QMLSettingsWidget(QWidget *parent) :
     connect(previewButton,SIGNAL(released()),this,SLOT(preview()));
     connect(themesList,SIGNAL(currentIndexChanged(int)),this,SLOT(widgetStateChanged()));
     connect(themesList,SIGNAL(currentIndexChanged(int)),this,SLOT(preview()));
+    connect(ignoreSettingsJsonCheckBox,SIGNAL(toggled(bool)),this,SLOT(widgetStateChanged()));
     connect(updatePositionBox,SIGNAL(toggled(bool)),this,SLOT(widgetStateChanged()));
     connect(appendModeCheckBox,SIGNAL(toggled(bool)),this,SLOT(widgetStateChanged()));
     connect(updateModeCheckBox,SIGNAL(toggled(bool)),this,SLOT(widgetStateChanged()));
@@ -131,6 +132,11 @@ void QMLSettingsWidget::loadSettings()
     messageRecivedCheckBox->setChecked(settings_static->value("messageRecived",true).toBool());
     marginSpinBox->setValue(settings_static->value("margin",20).toInt());
     themesList->setCurrentIndex(themesList->findData(settings_static->value("theme_path").toString()));
+#ifdef Q_WS_WIN
+    ignoreSettingsJsonCheckBox->setChecked(settings_static->value("ignore_settings_json",false).toBool());
+#else
+    ignoreSettingsJsonCheckBox->setChecked(settings_static->value("ignore_settings_json",true).toBool());
+#endif
 }
 
 void QMLSettingsWidget::saveSettings()
@@ -150,6 +156,7 @@ void QMLSettingsWidget::saveSettings()
     settings->setValue("contactIsTyping",contactIsTypingCheckBox->isChecked());
     settings->setValue("contactOffline",contactOfflineCheckBox->isChecked());
     settings->setValue("contactOnline",contactOnlineCheckBox->isChecked());
+    settings->setValue("ignore_settings_json",ignoreSettingsJsonCheckBox->isChecked());
     settings->sync();
     QmlPopups::Manager::self()->loadSettings();
 }

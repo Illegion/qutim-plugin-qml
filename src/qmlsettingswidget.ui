@@ -17,15 +17,15 @@
    <item>
     <widget class="QToolBox" name="toolBox">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="page">
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
-        <width>259</width>
-        <height>364</height>
+        <y>-108</y>
+        <width>367</width>
+        <height>404</height>
        </rect>
       </property>
       <attribute name="label">
@@ -253,6 +253,16 @@
          </layout>
         </widget>
        </item>
+       <item>
+        <widget class="QCheckBox" name="ignoreSettingsJsonCheckBox">
+         <property name="toolTip">
+          <string>Useful for linux systems. This option disable Aero styles in popups and enable simple transparency</string>
+         </property>
+         <property name="text">
+          <string>Ignore settings.json</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="page_2">
@@ -261,7 +271,7 @@
         <x>0</x>
         <y>0</y>
         <width>382</width>
-        <height>304</height>
+        <height>296</height>
        </rect>
       </property>
       <attribute name="label">
