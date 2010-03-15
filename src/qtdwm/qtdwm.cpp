@@ -115,6 +115,10 @@ bool QtDWM::enableBlurBehindWindow(QWidget *widget, bool enable)
 {
     Q_ASSERT(widget);
     bool result = false;
+#ifndef Q_WS_WIN
+    Q_UNUSED(enable)
+    Q_UNUSED(widget)
+#endif
 #ifdef Q_WS_WIN
     if (resolveLibs()) {
         DWM_BLURBEHIND bb = {0};
@@ -154,7 +158,9 @@ bool QtDWM::extendFrameIntoClientArea(QWidget *widget, int left, int top, int ri
     Q_UNUSED(top);
     Q_UNUSED(right);
     Q_UNUSED(bottom);
-
+#ifndef Q_WS_WIN
+    Q_UNUSED(widget)
+#endif
     bool result = false;
 #ifdef Q_WS_WIN
     if (resolveLibs()) {

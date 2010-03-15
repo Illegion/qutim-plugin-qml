@@ -8,40 +8,34 @@
 #include <qutim/settings.h>
 #include <QMouseEvent>
 #include "qtdwm/qtdwm.h"
+#include "manager.h"
 
 #include <QSettings>
 
 using namespace qutim_sdk_0_2;
 
+#ifdef Q_WS_WIN
+#define DEFAULT PATH "%APPDATA%\\qutim\\qmlpopups\\default\\"
+#else
+#define DEFAULT_PATH "~/.config/qutim/qmlpopups/default/"
+#endif
+
 namespace QmlPopups {
 
 	PopupWidget::PopupWidget()
 	{
-            QString themePath;
-            QSettings test_settings(QSettings::defaultFormat(),
-                                              QSettings::UserScope, "qutim/"+SystemsCity::PluginSystem()->getProfileDir().dirName(), "qml_popups");
-            if(!test_settings.value("use_temp",false).toBool())
-            {
-                QSettings settings(QSettings::defaultFormat(),
-                                              QSettings::UserScope, "qutim/"+SystemsCity::PluginSystem()->getProfileDir().dirName(), "qml_popups");
-                themePath = settings.value("theme_path","/usr/share/qutim/qmlpopups/default").toString();
-            }
-            else
-            {
-                QSettings settings(QSettings::defaultFormat(),
-                                     QSettings::UserScope, "qutim/"+SystemsCity::PluginSystem()->getProfileDir().dirName(), "qml_popups_temp");
-                themePath = settings.value("theme_path","/usr/share/qutim/qmlpopups/default").toString();
-            }
+	    qDebug() << QDir(DEFAULT_PATH).absolutePath();//убрать после проверки под оффтопиком!!!
+            QString themePath = QmlPopups::Manager::getSettingsPtr()->value("theme_path",DEFAULT_PATH).toString();
 
             Qt::WindowFlags widgetFlags = Qt::ToolTip;
             PopupWidgetFlags popupFlags = Transparent;
             loadJsonSettings(themePath + "/settings.json",widgetFlags,popupFlags);
-            qDebug() << widgetFlags << " : " << popupFlags;
             setWindowFlags(widgetFlags);
 
-		connect(this,SIGNAL(sceneResized(QSize)),this,SLOT(onSceneResized(QSize)));
-		//view->setContentResizable(true);
-		setAttribute(Qt::WA_DeleteOnClose);
+	    connect(this,SIGNAL(sceneResized(QSize)),this,SLOT(onSceneResized(QSize)));
+	    //view->setContentResizable(true);
+	    setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Expanding);
+	    setAttribute(Qt::WA_DeleteOnClose);
 
 		if (popupFlags & Transparent) {
 			setAttribute(Qt::WA_NoSystemBackground);
@@ -61,8 +55,8 @@ namespace QmlPopups {
                     QtDWM::enableBlurBehindWindow(this,true);
 		}
 
-		QString filename =themePath % QLatin1Literal("/main.qml");//м.б. QDir::separator?
-		setSource(QUrl::fromLocalFile(filename));//url - main.qml
+		QString filename =themePath % QLatin1Literal("/main.qml");
+		setSource(QUrl::fromLocalFile(filename));
 
 		show();
 		rootContext()->setContextProperty("popupWidget",this);

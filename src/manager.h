@@ -22,6 +22,7 @@
 #include <QEasingCurve>
 #include "backend.h"
 #include <qutim/settings.h>
+
 using namespace qutim_sdk_0_2;
 class QRect;
 class QDir;
@@ -63,6 +64,24 @@ namespace QmlPopups
 		QList<Popup *> active_notifications;
 		static Manager *instance;
 		int getNumber(const QString &id) const;
+	public:
+		static QSettings* getSettingsPtr()
+		{
+		    QSettings test_settings(QSettings::defaultFormat(),
+					    QSettings::UserScope,
+					    "qutim/"+SystemsCity::PluginSystem()->getProfileDir().dirName(),
+					    "qml_popups");
+		    if(!test_settings.value("use_temp",false).toBool())
+			return new QSettings(QSettings::defaultFormat(),
+					     QSettings::UserScope,
+					     "qutim/"+SystemsCity::PluginSystem()->getProfileDir().dirName(),
+					     "qml_popups");
+		    else
+			return new QSettings(QSettings::defaultFormat(),
+					     QSettings::UserScope,
+					     "qutim/"+SystemsCity::PluginSystem()->getProfileDir().dirName(),
+					     "qml_popups_temp");
+		}
 	};
 }
 

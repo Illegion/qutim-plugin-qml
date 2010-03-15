@@ -116,19 +116,12 @@ namespace QmlPopups
 
 	void Manager::loadSettings()
 	{
-            QSettings *settings;
-            QSettings test_settings(QSettings::defaultFormat(),
-                                              QSettings::UserScope, "qutim/"+SystemsCity::PluginSystem()->getProfileDir().dirName(), "qml_popups");
-            if(!test_settings.value("use_temp",false).toBool())
-                settings = new QSettings(QSettings::defaultFormat(),
-                                              QSettings::UserScope, "qutim/"+SystemsCity::PluginSystem()->getProfileDir().dirName(), "qml_popups");
-            else
-                settings = new QSettings(QSettings::defaultFormat(),
-                                     QSettings::UserScope, "qutim/"+SystemsCity::PluginSystem()->getProfileDir().dirName(), "qml_popups_temp");
+            QSettings *settings = Manager::getSettingsPtr();
             updatePosition = settings->value("updatePosition",true).toBool();
             animation = static_cast<AnimationFlags>(settings->value("animationFlags",Opacity).toInt());
             timeout = settings->value("timeout",5000).toInt();
-            easingCurve.setType(static_cast<QEasingCurve::Type>(settings->value("easingCurve",QEasingCurve::OutSine).toInt()));
+            easingCurve.setType(static_cast<QEasingCurve::Type>
+                                (settings->value("easingCurve",QEasingCurve::OutSine).toInt()));
             maxCount = settings->value("maxCount",10).toInt();
             maxTextLength = settings->value("maxTextLength",160).toInt();
             appendMode = settings->value("appendMode",true).toBool();

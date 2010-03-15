@@ -48,6 +48,7 @@ QMLSettingsWidget::QMLSettingsWidget(QWidget *parent) :
     connect(themesList,SIGNAL(currentIndexChanged(int)),this,SLOT(preview()));
     connect(updatePositionBox,SIGNAL(toggled(bool)),this,SLOT(widgetStateChanged()));
     connect(appendModeCheckBox,SIGNAL(toggled(bool)),this,SLOT(widgetStateChanged()));
+    connect(updateModeCheckBox,SIGNAL(toggled(bool)),this,SLOT(widgetStateChanged()));
     connect(easingCurveComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(widgetStateChanged()));
     connect(animationCheckBox,SIGNAL(currentIndexChanged(int)),this,SLOT(widgetStateChanged()));
     connect(animationDurationSpinBox,SIGNAL(valueChanged(int)),this,SLOT(widgetStateChanged()));
@@ -163,13 +164,6 @@ void QMLSettingsWidget::changeEvent(QEvent *e)
     default:
         break;
     }
-}
-
-void QMLSettingsWidget::on_themesList_currentIndexChanged(int index)
-{
-    Q_UNUSED(index);
-    if(QDir(themesList->itemData(themesList->currentIndex()).toString()).exists("main.qml"))
-        preview();
 }
 
 void QMLSettingsWidget::preview()
