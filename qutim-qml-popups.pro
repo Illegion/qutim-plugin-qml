@@ -27,3 +27,6 @@ TARGET = qmlpopup
 INSTALLS += target
 unix:target.path += /usr/lib/qutim
 FORMS += src/qmlsettingswidget.ui
+
+RESOURCES += \
+    icons.qrc

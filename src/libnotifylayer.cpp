@@ -33,7 +33,7 @@ QList<SettingsStructure> LibnotifyLayer::getLayerSettingsList()
     SettingsStructure settings;
     settings.settings_item = new QTreeWidgetItem();
     settings.settings_item->setText(0, QObject::tr("Notifications"));
-    //settings.settings_item->setIcon(0, Icon("events"));
+    settings.settings_item->setIcon(0, QIcon(":icon.png"));
     settings_widget = new QMLSettingsWidget();
     settings.settings_widget = settings_widget;
     m_settings.append(settings);

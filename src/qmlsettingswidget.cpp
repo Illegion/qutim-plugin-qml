@@ -130,7 +130,7 @@ void QMLSettingsWidget::loadSettings()
     contactOnlineCheckBox->setChecked(settings_static->value("contactOnline",false).toBool());
     messageRecivedCheckBox->setChecked(settings_static->value("messageRecived",true).toBool());
     marginSpinBox->setValue(settings_static->value("margin",20).toInt());
-    themesList->setCurrentIndex(themesList->findText(settings_static->value("themeName","default").toString()));
+    themesList->setCurrentIndex(themesList->findData(settings_static->value("theme_path").toString()));
 }
 
 void QMLSettingsWidget::saveSettings()
