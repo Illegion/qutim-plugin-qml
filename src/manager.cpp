@@ -116,31 +116,32 @@ namespace QmlPopups
 
 	void Manager::loadSettings()
 	{
-            QSettings *settings = Manager::getSettingsPtr();
-            updatePosition = settings->value("updatePosition",true).toBool();
-            animation = static_cast<AnimationFlags>(settings->value("animationFlags",Opacity).toInt());
-            timeout = settings->value("timeout",5000).toInt();
+            SettingsManager *s_mgs = SettingsManager::getPtr();
+            s_mgs->init();
+            updatePosition = s_mgs->getValue("updatePosition",true).toBool();
+            animation = static_cast<AnimationFlags>(s_mgs->getValue("animationFlags",Opacity).toInt());
+            timeout = s_mgs->getValue("timeout",5000).toInt();
             easingCurve.setType(static_cast<QEasingCurve::Type>
-                                (settings->value("easingCurve",QEasingCurve::OutSine).toInt()));
-            maxCount = settings->value("maxCount",10).toInt();
-            maxTextLength = settings->value("maxTextLength",160).toInt();
-            appendMode = settings->value("appendMode",true).toBool();
-            updateMode = settings->value("updateMode",false).toBool();
-            animationDuration = settings->value("animationDuration",1000).toInt();
+                                (s_mgs->getValue("easingCurve",QEasingCurve::OutSine).toInt()));
+            maxCount = s_mgs->getValue("maxCount",10).toInt();
+            maxTextLength = s_mgs->getValue("maxTextLength",160).toInt();
+            appendMode = s_mgs->getValue("appendMode",true).toBool();
+            updateMode = s_mgs->getValue("updateMode",false).toBool();
+            animationDuration = s_mgs->getValue("animationDuration",1000).toInt();
 
             showFlags = 0;
-            if(settings->value("contactChangedStatus",false).toBool())
-                showFlags|=4;
-            if(settings->value("contactIsTyping",false).toBool())
-                showFlags|=256;
-            if(settings->value("contactOffline",false).toBool())
-                showFlags|=2;
-            if(settings->value("contactOnline",false).toBool())
-                showFlags|=1;
-            if(settings->value("messageRecived",true).toBool())
-                showFlags|=512;
+            if(s_mgs->getValue("contactChangedStatus",false).toBool())
+                showFlags|=QmlPopups::NotifyStatusChange;
+            if(s_mgs->getValue("contactIsTyping",false).toBool())
+                showFlags|=QmlPopups::NotifyTyping;
+            if(s_mgs->getValue("contactOffline",false).toBool())
+                showFlags|=QmlPopups::NotifyOffline;
+            if(s_mgs->getValue("contactOnline",false).toBool())
+                showFlags|=QmlPopups::NotifyOffline;
+            if(s_mgs->getValue("messageRecived",true).toBool())
+                showFlags|=QmlPopups::NotifyMessageGet;
             
-            margin = settings->value("margin",20).toInt();
+            margin = s_mgs->getValue("margin",20).toInt();
 	}
 
 }

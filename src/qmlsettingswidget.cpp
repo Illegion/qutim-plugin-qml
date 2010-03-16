@@ -17,13 +17,10 @@
 QMLSettingsWidget::QMLSettingsWidget(QWidget *parent) :
     QWidget(parent){
     this->blockSignals(true);
+    stype = SettingsManager::Auto;
+    settings_manager = SettingsManager::getPtr();
     counter = 666;
     emit setCurveTypes();
-    settings_static = new QSettings(QSettings::defaultFormat(),
-                                      QSettings::UserScope, "qutim/"+SystemsCity::PluginSystem()->getProfileDir().dirName(), "qml_popups");
-    settings_temp = new QSettings(QSettings::defaultFormat(),
-                                      QSettings::UserScope, "qutim/"+SystemsCity::PluginSystem()->getProfileDir().dirName(), "qml_popups_temp");
-    settings = settings_static;
     setupUi(this);    
     QString nameFilter("main.qml");
     QStringList pathlist = SystemsCity::PluginSystem()->getSharePaths();
@@ -116,48 +113,47 @@ void QMLSettingsWidget::setCurveTypes()
 
 void QMLSettingsWidget::loadSettings()
 {
-    updatePositionBox->setChecked(settings_static->value("updatePosition",true).toBool());
-    animationCheckBox->setCurrentIndex(settings_static->value("animationFlags",2).toInt());
-    timeoutSpinBox->setValue(settings_static->value("timeout",5000).toInt());
-    easingCurveComboBox->setCurrentIndex(easingCurveComboBox->findData(settings_static->value("easingCurve",QEasingCurve::OutSine).toInt()));
-    maxCountSpinBox->setValue(settings_static->value("maxCount",10).toInt());
-    maxTextLengthSpinBox->setValue(settings_static->value("maxTextLength",160).toInt());
-    appendModeCheckBox->setChecked(settings_static->value("appendMode",true).toBool());
-    updateModeCheckBox->setChecked(settings_static->value("updateMode",false).toBool());
-    animationDurationSpinBox->setValue(settings_static->value("animationDuration",1000).toInt());
-    contactChangedStatusCheckBox->setChecked(settings_static->value("contactChangedStatus",false).toBool());
-    contactIsTypingCheckBox->setChecked(settings_static->value("contactIsTyping",false).toBool());
-    contactOfflineCheckBox->setChecked(settings_static->value("contactOffline",false).toBool());
-    contactOnlineCheckBox->setChecked(settings_static->value("contactOnline",false).toBool());
-    messageRecivedCheckBox->setChecked(settings_static->value("messageRecived",true).toBool());
-    marginSpinBox->setValue(settings_static->value("margin",20).toInt());
-    themesList->setCurrentIndex(themesList->findData(settings_static->value("theme_path").toString()));
+    updatePositionBox->setChecked(settings_manager->getValue("updatePosition",true,SettingsManager::Static).toBool());
+    animationCheckBox->setCurrentIndex(settings_manager->getValue("animationFlags",2,SettingsManager::Static).toInt());
+    timeoutSpinBox->setValue(settings_manager->getValue("timeout",5000,SettingsManager::Static).toInt());
+    easingCurveComboBox->setCurrentIndex(easingCurveComboBox->findData(settings_manager->getValue("easingCurve",QEasingCurve::OutSine,SettingsManager::Static).toInt()));
+    maxCountSpinBox->setValue(settings_manager->getValue("maxCount",10,SettingsManager::Static).toInt());
+    maxTextLengthSpinBox->setValue(settings_manager->getValue("maxTextLength",160,SettingsManager::Static).toInt());
+    appendModeCheckBox->setChecked(settings_manager->getValue("appendMode",true,SettingsManager::Static).toBool());
+    updateModeCheckBox->setChecked(settings_manager->getValue("updateMode",false,SettingsManager::Static).toBool());
+    animationDurationSpinBox->setValue(settings_manager->getValue("animationDuration",1000,SettingsManager::Static).toInt());
+    contactChangedStatusCheckBox->setChecked(settings_manager->getValue("contactChangedStatus",false,SettingsManager::Static).toBool());
+    contactIsTypingCheckBox->setChecked(settings_manager->getValue("contactIsTyping",false,SettingsManager::Static).toBool());
+    contactOfflineCheckBox->setChecked(settings_manager->getValue("contactOffline",false,SettingsManager::Static).toBool());
+    contactOnlineCheckBox->setChecked(settings_manager->getValue("contactOnline",false,SettingsManager::Static).toBool());
+    messageRecivedCheckBox->setChecked(settings_manager->getValue("messageRecived",true,SettingsManager::Static).toBool());
+    marginSpinBox->setValue(settings_manager->getValue("margin",20,SettingsManager::Static).toInt());
+    themesList->setCurrentIndex(themesList->findData(settings_manager->getValue("theme_path",QString(),SettingsManager::Static).toString()));
 #ifdef Q_WS_WIN
-    ignoreSettingsJsonCheckBox->setChecked(settings_static->value("ignore_settings_json",false).toBool());
+    ignoreSettingsJsonCheckBox->setChecked(settings_manager->getValue("ignore_settings_json",false,SettingsManager::Static).toBool());
 #else
-    ignoreSettingsJsonCheckBox->setChecked(settings_static->value("ignore_settings_json",true).toBool());
+    ignoreSettingsJsonCheckBox->setChecked(settings_manager->getValue("ignore_settings_json",true,SettingsManager::Static).toBool());
 #endif
 }
 
 void QMLSettingsWidget::saveSettings()
 {
-    settings->setValue("theme_path",themesList->itemData(themesList->currentIndex()).toString());
-    settings->setValue("updatePosition",updatePositionBox->isChecked());
-    settings->setValue("animationFlags",animationCheckBox->currentIndex());
-    settings->setValue("timeout",timeoutSpinBox->value());
-    settings->setValue("maxCount",maxCountSpinBox->value());
-    settings->setValue("maxTextLength",maxTextLengthSpinBox->value());
-    settings->setValue("appendMode",appendModeCheckBox->isChecked());
-    settings->setValue("updateMode",updateModeCheckBox->isChecked());
-    settings->setValue("animationDuration",animationDurationSpinBox->value());
-    settings->setValue("margin",marginSpinBox->value());
-    settings->setValue("easingCurve",easingCurveComboBox->itemData(easingCurveComboBox->currentIndex()));
-    settings->setValue("contactChangedStatus",contactChangedStatusCheckBox->isChecked());
-    settings->setValue("contactIsTyping",contactIsTypingCheckBox->isChecked());
-    settings->setValue("contactOffline",contactOfflineCheckBox->isChecked());
-    settings->setValue("contactOnline",contactOnlineCheckBox->isChecked());
-    settings->setValue("ignore_settings_json",ignoreSettingsJsonCheckBox->isChecked());
-    settings->sync();
+    settings_manager->setValue("theme_path",themesList->itemData(themesList->currentIndex()).toString(),stype);
+    settings_manager->setValue("updatePosition",updatePositionBox->isChecked(),stype);
+    settings_manager->setValue("animationFlags",animationCheckBox->currentIndex(),stype);
+    settings_manager->setValue("timeout",timeoutSpinBox->value(),stype);
+    settings_manager->setValue("maxCount",maxCountSpinBox->value(),stype);
+    settings_manager->setValue("maxTextLength",maxTextLengthSpinBox->value(),stype);
+    settings_manager->setValue("appendMode",appendModeCheckBox->isChecked(),stype);
+    settings_manager->setValue("updateMode",updateModeCheckBox->isChecked(),stype);
+    settings_manager->setValue("animationDuration",animationDurationSpinBox->value(),stype);
+    settings_manager->setValue("margin",marginSpinBox->value(),stype);
+    settings_manager->setValue("easingCurve",easingCurveComboBox->itemData(easingCurveComboBox->currentIndex()),stype);
+    settings_manager->setValue("contactChangedStatus",contactChangedStatusCheckBox->isChecked(),stype);
+    settings_manager->setValue("contactIsTyping",contactIsTypingCheckBox->isChecked(),stype);
+    settings_manager->setValue("contactOffline",contactOfflineCheckBox->isChecked(),stype);
+    settings_manager->setValue("contactOnline",contactOnlineCheckBox->isChecked(),stype);
+    settings_manager->setValue("ignore_settings_json",ignoreSettingsJsonCheckBox->isChecked(),stype);
     QmlPopups::Manager::self()->loadSettings();
 }
 
@@ -175,19 +171,15 @@ void QMLSettingsWidget::changeEvent(QEvent *e)
 
 void QMLSettingsWidget::preview()
 {
-    settings = settings_temp;
-    settings_static->setValue("use_temp",true);
-    settings_static->sync();
+    settings_manager->setValue("use_temp",true,SettingsManager::Static);
     saveSettings();
     qutim_sdk_0_2::TreeModelItem item;
     item.m_account_name = tr("Test");
-    for(int i = 0; i<4; i++)
+    for(int i = 0; i<3; i++)
     {
         QmlPopups::Popup *popup = new QmlPopups::Popup(QString::number(counter++));
         popup->setMessage(tr("Preview"),tr("This is a simple popup ")+QString::number(i));
         popup->send();
     }
-    settings_static->setValue("use_temp",false);
-    settings_static->sync();
-    settings = settings_static;
+    settings_manager->setValue("use_temp",false,SettingsManager::Static);
 }

@@ -35,7 +35,7 @@ public:
 	virtual bool init(PluginSystemInterface *plugin_system);	
 	virtual void release() {}
 	virtual void removeGuiLayerSettings() {}
-	virtual void removeLayerSettings() {delete settings_widget;}
+	virtual void removeLayerSettings() {delete static_cast<QMLSettingsWidget*>(settings_widget);}
         QList<SettingsStructure> getLayerSettingsList();
 	virtual void saveGuiSettingsPressed() {}
 	virtual void saveLayerSettings();

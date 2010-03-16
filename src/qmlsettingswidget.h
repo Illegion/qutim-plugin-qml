@@ -21,6 +21,8 @@
 #include <qutim/settings.h>
 #include <QDir>
 #include <QDebug>
+#include "settingsmanager.h"
+#include "manager.h"
 using namespace qutim_sdk_0_2;
 
 class QMLSettingsWidget : public QWidget, private Ui::QMLSettingsWidget {
@@ -31,16 +33,15 @@ public:
 protected:
     void changeEvent(QEvent *e);
     qint16 counter;
-    QSettings *settings_static;
-    QSettings *settings_temp;
-    QSettings *settings;
     QMap<QEasingCurve::Type,QString> curve_types;
+    SettingsManager *settings_manager;
+    SettingsManager::SettingsType stype;
 public slots:
     void preview();
     void loadSettings();
     void saveSettings();
-    void saveSettingsStatic(){settings = settings_static; saveSettings();}
-    void widgetStateChanged() { emit settingsChanged(); }
+    void saveSettingsStatic(){ stype = SettingsManager::Static; saveSettings();}
+    void widgetStateChanged(){ emit settingsChanged(); }
 
 private slots:
     void setCurveTypes();

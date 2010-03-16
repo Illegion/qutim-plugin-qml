@@ -34,20 +34,20 @@ namespace QmlPopups
                 int typemask = 0;
                 switch(type)
                 {
-                case NotifyMessageGet:
-                    typemask = 512;
+                case qutim_sdk_0_2::NotifyMessageGet:
+                    typemask = QmlPopups::NotifyMessageGet;
                     break;
-                case NotifyOffline:
-                    typemask = 2;
+                case qutim_sdk_0_2::NotifyOffline:
+                    typemask = QmlPopups::NotifyOffline;
                     break;
-                case NotifyOnline:
-                    typemask = 1;
+                case qutim_sdk_0_2::NotifyOnline:
+                    typemask = QmlPopups::NotifyOnline;
                     break;
-                case NotifyTyping:
-                    typemask = 256;
+                case qutim_sdk_0_2::NotifyTyping:
+                    typemask = QmlPopups::NotifyTyping;
                     break;
-                case NotifyStatusChange:
-                    typemask = 4;
+                case qutim_sdk_0_2::NotifyStatusChange:
+                    typemask = QmlPopups::NotifyStatusChange;
                     break;
                 default:
                     typemask = 0xfffffff;

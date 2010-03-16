@@ -23,9 +23,9 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-108</y>
+        <y>-82</y>
         <width>367</width>
-        <height>404</height>
+        <height>378</height>
        </rect>
       </property>
       <attribute name="label">
@@ -227,6 +227,16 @@
             </property>
            </widget>
           </item>
+          <item row="8" column="0">
+           <widget class="QCheckBox" name="ignoreSettingsJsonCheckBox">
+            <property name="toolTip">
+             <string>Useful for linux systems. This option disable Aero styles in popups and enable simple transparency</string>
+            </property>
+            <property name="text">
+             <string>Ignore settings.json</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>
@@ -251,16 +261,6 @@
            </widget>
           </item>
          </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="ignoreSettingsJsonCheckBox">
-         <property name="toolTip">
-          <string>Useful for linux systems. This option disable Aero styles in popups and enable simple transparency</string>
-         </property>
-         <property name="text">
-          <string>Ignore settings.json</string>
-         </property>
         </widget>
        </item>
       </layout>

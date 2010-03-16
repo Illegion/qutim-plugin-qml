@@ -10,6 +10,7 @@ using namespace qutim_sdk_0_2;
 #include "backend.h"
 #include <QtDeclarative/QDeclarativeView>
 #include "k8json/k8json.h"
+#include "settingsmanager.h"
 namespace QmlPopups
 {
 	enum PopupWidgetFlag

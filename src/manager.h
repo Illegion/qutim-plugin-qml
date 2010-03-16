@@ -22,12 +22,28 @@
 #include <QEasingCurve>
 #include "backend.h"
 #include <qutim/settings.h>
+#include "settingsmanager.h"
 
 using namespace qutim_sdk_0_2;
 class QRect;
 class QDir;
 namespace QmlPopups
 {
+    enum NotifyType
+    {
+            NotifyOnline = 1,
+            NotifyOffline = 2,
+            NotifyStatusChange = 4,
+            NotifyBirthday = 8,
+            NotifyStartup = 16,
+            NotifyMessageGet = 32,
+            NotifyMessageSend = 64,
+            NotifySystem = 128,
+            NotifyTyping = 256,
+            NotifyBlockedMessage = 512,
+            NotifyCustom = 1024,
+            NotifyCount = 2048
+    };
 	class Popup;
 	enum AnimationFlag
 	{
@@ -38,7 +54,7 @@ namespace QmlPopups
 	Q_DECLARE_FLAGS (AnimationFlags, AnimationFlag)
 	class Manager
 	{
-            Q_DECLARE_FLAGS(NotificationTypes, qutim_sdk_0_2::NotificationType)
+            Q_DECLARE_FLAGS(NotificationTypes, NotifyType)
 	public:
 		Manager();
 		Popup *getById (const QString &id) const;
@@ -53,7 +69,7 @@ namespace QmlPopups
 		QEasingCurve easingCurve;
 		bool updatePosition;
 		AnimationFlags animation;
-		int showFlags;
+		NotificationTypes showFlags;
 		uint timeout;
 		bool appendMode;
 		bool updateMode;
@@ -64,24 +80,6 @@ namespace QmlPopups
 		QList<Popup *> active_notifications;
 		static Manager *instance;
 		int getNumber(const QString &id) const;
-	public:
-		static QSettings* getSettingsPtr()
-		{
-		    QSettings test_settings(QSettings::defaultFormat(),
-					    QSettings::UserScope,
-					    "qutim/"+SystemsCity::PluginSystem()->getProfileDir().dirName(),
-					    "qml_popups");
-		    if(!test_settings.value("use_temp",false).toBool())
-			return new QSettings(QSettings::defaultFormat(),
-					     QSettings::UserScope,
-					     "qutim/"+SystemsCity::PluginSystem()->getProfileDir().dirName(),
-					     "qml_popups");
-		    else
-			return new QSettings(QSettings::defaultFormat(),
-					     QSettings::UserScope,
-					     "qutim/"+SystemsCity::PluginSystem()->getProfileDir().dirName(),
-					     "qml_popups_temp");
-		}
 	};
 }
 

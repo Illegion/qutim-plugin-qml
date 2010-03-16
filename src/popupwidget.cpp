@@ -18,17 +18,17 @@ namespace QmlPopups {
 
 	PopupWidget::PopupWidget()
 	{
-	    QSettings *settings = QmlPopups::Manager::getSettingsPtr();
+	    SettingsManager *s_mgr = SettingsManager::getPtr();
             Qt::WindowFlags widgetFlags = Qt::ToolTip;
             PopupWidgetFlags popupFlags = Transparent;
 #ifdef Q_WS_WIN
-	    QString themePath = settings->value("theme_path","%APPDATA%\\qutim\\qmlpopups\\default\\").toString();
-            if(!settings->value("ignore_settings_json",false).toBool())
+	    QString themePath = s_mgr->getValue("theme_path","%APPDATA%\\qutim\\qmlpopups\\default\\").toString();
+            if(!s_mgr->getValue("ignore_settings_json",false).toBool())
 #else
-	    QString themePath = settings->value("theme_path","~/.config/qutim/qmlpopups/default/").toString();
-	    if(!settings->value("ignore_settings_json",true).toBool())
+	    QString themePath = s_mgr->getValue("theme_path","~/.config/qutim/qmlpopups/default/").toString();
+	    if(!s_mgr->getValue("ignore_settings_json",true).toBool())
 #endif
-                    loadJsonSettings(themePath + "/settings.json",widgetFlags,popupFlags);
+                loadJsonSettings(themePath + "/settings.json",widgetFlags,popupFlags);
             setWindowFlags(widgetFlags);
 
 	    connect(this,SIGNAL(sceneResized(QSize)),this,SLOT(onSceneResized(QSize)));
@@ -57,7 +57,7 @@ namespace QmlPopups {
 		QString filename =themePath % QLatin1Literal("/main.qml");
 		setSource(QUrl::fromLocalFile(filename));
 
-		show();
+		//show();
 		rootContext()->setContextProperty("popupWidget",this);
 
 	}
